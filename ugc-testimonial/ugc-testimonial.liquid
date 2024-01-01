@@ -16,10 +16,14 @@
   endif
 %}
 {% style %}
+ #shopify-section-{{ section.id }}{
+    background-color: {{ section.settings.background_color }};
+ }
   .section-{{ section.id  }}-padding{
     padding-top: {{ section.settings.padding_top_mobile }}px;
     padding-bottom: {{ section.settings.padding_bottom_mobile }}px;
-    background-color: {{ section.settings.background_color }};
+    padding-left: {{ section.settings.padding_left_mobile }}px;
+    padding-right: {{ section.settings.padding_right_mobile }}px;
   }
   .section-{{ section.id  }}-padding .ugc-videos__heading{
     color: {{ section.settings.heading_color }};
@@ -50,6 +54,8 @@
     .section-{{ section.id  }}-padding{
     padding-top: {{ section.settings.padding_top }}px;
     padding-bottom: {{ section.settings.padding_bottom }}px;
+    padding-left: {{ section.settings.padding_left }}px;
+    padding-right: {{ section.settings.padding_right }}px;
   }
   }
 {% endstyle %}
@@ -215,6 +221,24 @@
       "label": "Padding Bottom"
     },
     {
+      "type": "range",
+      "id": "padding_right",
+      "default": 20,
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "label": "Padding Right"
+    },
+    {
+      "type": "range",
+      "id": "padding_left",
+      "default": 20,
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "label": "Padding Left"
+    },
+    {
       "type": "header",
       "content": "Padding - Mobile"
     },
@@ -235,6 +259,24 @@
       "max": 100,
       "step": 1,
       "label": "Padding Bottom"
+    },
+    {
+      "type": "range",
+      "id": "padding_right_mobile",
+      "default": 20,
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "label": "Padding Right"
+    },
+    {
+      "type": "range",
+      "id": "padding_left_mobile",
+      "default": 20,
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "label": "Padding Left"
     }
   ],
   "presets": [

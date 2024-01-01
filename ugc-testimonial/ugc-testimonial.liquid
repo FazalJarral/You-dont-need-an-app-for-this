@@ -16,48 +16,48 @@
   endif
 %}
 {% style %}
- #shopify-section-{{ section.id }}{
-    background-color: {{ section.settings.background_color }};
- }
-  .section-{{ section.id  }}-padding{
-    padding-top: {{ section.settings.padding_top_mobile }}px;
-    padding-bottom: {{ section.settings.padding_bottom_mobile }}px;
-    padding-left: {{ section.settings.padding_left_mobile }}px;
-    padding-right: {{ section.settings.padding_right_mobile }}px;
+  #shopify-section-{{ section.id }}{
+     background-color: {{ section.settings.background_color }};
   }
-  .section-{{ section.id  }}-padding .ugc-videos__heading{
-    color: {{ section.settings.heading_color }};
-    text-align:center;
-  }
-  .section-{{ section.id  }}-padding .ugc-videos__heading--left{
-    text-align:left;
-  }
-  .section-{{ section.id  }}-padding .ugc-videos__heading--right{
-    text-align:right;
-  }
-  .section-{{ section.id  }}-padding .ugc__wrapper{
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    flex-wrap: nowrap;
-    gap:15px;
-  }
-  .section-{{ section.id  }}-padding .ugc__wrapper video{
-    flex-basis: calc(100% / {{section.settings.videos_per_row}});
-    flex-shrink: 0;
-    max-width:  calc(100% / {{section.settings.videos_per_row}})
-  }
-  .section-{{ section.id  }}-padding .ugc__wrapper video.rounder-video{
-    border-radius: 25px;
-  }
-  @media (min-width:750px){
-    .section-{{ section.id  }}-padding{
-    padding-top: {{ section.settings.padding_top }}px;
-    padding-bottom: {{ section.settings.padding_bottom }}px;
-    padding-left: {{ section.settings.padding_left }}px;
-    padding-right: {{ section.settings.padding_right }}px;
-  }
-  }
+   .section-{{ section.id  }}-padding{
+     padding-top: {{ section.settings.padding_top_mobile }}px;
+     padding-bottom: {{ section.settings.padding_bottom_mobile }}px;
+     padding-left: {{ section.settings.padding_left_mobile }}px;
+     padding-right: {{ section.settings.padding_right_mobile }}px;
+   }
+   .section-{{ section.id  }}-padding .ugc-videos__heading{
+     color: {{ section.settings.heading_color }};
+     text-align:center;
+   }
+   .section-{{ section.id  }}-padding .ugc-videos__heading--left{
+     text-align:left;
+   }
+   .section-{{ section.id  }}-padding .ugc-videos__heading--right{
+     text-align:right;
+   }
+   .section-{{ section.id  }}-padding .ugc__wrapper{
+     display:flex;
+     align-items:center;
+     justify-content:center;
+     flex-wrap: nowrap;
+     gap:15px;
+   }
+   .section-{{ section.id  }}-padding .ugc__wrapper video{
+     flex-basis: calc(100% / {{section.settings.videos_per_row}});
+     flex-shrink: 0;
+     max-width:  calc(100% / {{section.settings.videos_per_row}})
+   }
+   .section-{{ section.id  }}-padding .ugc__wrapper video.rounder-video{
+     border-radius: 25px;
+   }
+   @media (min-width:750px){
+     .section-{{ section.id  }}-padding{
+     padding-top: {{ section.settings.padding_top }}px;
+     padding-bottom: {{ section.settings.padding_bottom }}px;
+     padding-left: {{ section.settings.padding_left }}px;
+     padding-right: {{ section.settings.padding_right }}px;
+   }
+   }
 {% endstyle %}
 <div class="section-{{ section.id  }}-padding {%  unless section.settings.full_width %} page-width {% endunless %} ">
   {% if section.settings.heading != blank %}
@@ -70,7 +70,9 @@
   <div class="ugc__wrapper">
     {% for video in metaobject.video_review.value %}
       {% for image in metaobject.poster_image.value %}
-        {% assign preview_image = image | image_url: width: '500x' %}
+        {% if forloop.index == forloop.parentloop.index %}
+          {% assign preview_image = image | image_url: width: '500x' %}
+        {% endif %}
       {% endfor %}
 
       {% if controls %}

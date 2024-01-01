@@ -1,0 +1,246 @@
+{% liquid
+  assign handle = section.settings.metaobject_handle
+  assign type = section.settings.metaobject_type
+  assign autoplay = section.settings.autoplay
+  assign controls = section.settings.controls
+
+  assign metaobject = shop.metaobjects[type][handle]
+  if section.settings.video_style == 'rounded'
+    assign class = 'rounder-video'
+  endif
+
+  if autoplay
+    assign preload = 'metadeta'
+  else
+    assign preload = 'none'
+  endif
+%}
+{% style %}
+  .section-{{ section.id  }}-padding{
+    padding-top: {{ section.settings.padding_top_mobile }}px;
+    padding-bottom: {{ section.settings.padding_bottom_mobile }}px;
+    background-color: {{ section.settings.background_color }};
+  }
+  .section-{{ section.id  }}-padding .ugc-videos__heading{
+    color: {{ section.settings.heading_color }};
+    text-align:center;
+  }
+  .section-{{ section.id  }}-padding .ugc-videos__heading--left{
+    text-align:left;
+  }
+  .section-{{ section.id  }}-padding .ugc-videos__heading--right{
+    text-align:right;
+  }
+  .section-{{ section.id  }}-padding .ugc__wrapper{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    flex-wrap: nowrap;
+    gap:15px;
+  }
+  .section-{{ section.id  }}-padding .ugc__wrapper video{
+    flex-basis: calc(100% / {{section.settings.videos_per_row}});
+    flex-shrink: 0;
+    max-width:  calc(100% / {{section.settings.videos_per_row}})
+  }
+  .section-{{ section.id  }}-padding .ugc__wrapper video.rounder-video{
+    border-radius: 25px;
+  }
+  @media (min-width:750px){
+    .section-{{ section.id  }}-padding{
+    padding-top: {{ section.settings.padding_top }}px;
+    padding-bottom: {{ section.settings.padding_bottom }}px;
+  }
+  }
+{% endstyle %}
+<div class="section-{{ section.id  }}-padding {%  unless section.settings.full_width %} page-width {% endunless %} ">
+  {% if section.settings.heading != blank %}
+    <h2
+      class="ugc-videos__heading rte inline-richtext ugc-videos__heading--{{ section.settings.heading_alignment }}"
+    >
+      {{ section.settings.heading }}
+    </h2>
+  {% endif %}
+  <div class="ugc__wrapper">
+    {% for video in metaobject.video_review.value %}
+      {% for image in metaobject.poster_image.value %}
+        {% assign preview_image = image | image_url: width: '500x' %}
+      {% endfor %}
+
+      {% if controls %}
+        {{
+          video
+          | video_tag:
+            controls: controls,
+            autoplay: autoplay,
+            playsinline: true,
+            muted: true,
+            poster: preview_image,
+            preload: preload,
+            class: class
+        }}
+      {% else %}
+        {{
+          video
+          | video_tag:
+            autoplay: autoplay,
+            playsinline: true,
+            muted: true,
+            poster: preview_image,
+            preload: preload,
+            class: class
+        }}
+      {% endif %}
+    {% endfor %}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "UGC - Testimonial",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "full_width",
+      "label": "Full Width?",
+      "default": false
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color"
+    },
+    {
+      "type": "text",
+      "id": "metaobject_type",
+      "default": "ugc_testimonials",
+      "label": "Metaobject Type"
+    },
+    {
+      "type": "text",
+      "id": "metaobject_handle",
+      "default": "ugc-testimonials-lj6jggbu",
+      "label": "Metaobject handle"
+    },
+    {
+      "type": "checkbox",
+      "id": "autoplay",
+      "label": "Autoplay",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "controls",
+      "label": "Show Controls",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "video_style",
+      "label": "Video Style",
+      "options": [
+        {
+          "label": "Default",
+          "value": "default"
+        },
+        {
+          "label": "Rounded",
+          "value": "rounded"
+        }
+      ],
+      "default": "rounded"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Section Heading"
+    },
+    {
+      "type": "select",
+      "id": "heading_alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "center",
+      "label": "Heading Alignment"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading color",
+      "default": "#000"
+    },
+    {
+      "type": "range",
+      "id": "videos_per_row",
+      "default": 3,
+      "min": 1,
+      "max": 5,
+      "step": 1,
+      "label": "Videos Per Row "
+    },
+    {
+      "type": "header",
+      "content": "Padding - Desktop"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "default": 20,
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "label": "Padding Top"
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "default": 20,
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "label": "Padding Bottom"
+    },
+    {
+      "type": "header",
+      "content": "Padding - Mobile"
+    },
+    {
+      "type": "range",
+      "id": "padding_top_mobile",
+      "default": 20,
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "label": "Padding Top"
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_mobile",
+      "default": 20,
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "label": "Padding Bottom"
+    }
+  ],
+  "presets": [
+    {
+      "name": "UGC - Testimonial"
+    }
+  ]
+}
+{% endschema %}

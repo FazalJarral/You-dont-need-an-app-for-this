@@ -2,7 +2,7 @@
     assign access_granted = true
     assign limited_access = page.metafields.custom.limited_access
     if limited_access
-      assign access_granted = false;
+      assign access_granted = false
       if page.metafields.custom.access_password != blank
         assign access_password = page.metafields.custom.access_password
         # logic to show a password form to customer and match it with access_password
@@ -11,13 +11,12 @@
         for tag in page.metafields.custom.customer_tags_with_access.value
           if customer.tags contains tag
             assign access_granted = true
-            break
           endif
         endfor
       endif
     endif
 %}
-{% if access_granted %}
+{% if access_granted  %}
   <div class="page-width page-width--narrow section-{{ section.id }}-padding">
     <h1 class="main-page-title page-title h0{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--fade-in{% endif %}">
       {{ page.title | escape }}
@@ -26,4 +25,6 @@
       {{ page.content }}
     </div>
   </div>
+{% else %} 
+  <p>You dont have access to view this page</p>
 {% endif %}

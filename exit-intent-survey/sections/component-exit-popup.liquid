@@ -1,0 +1,28 @@
+
+{% liquid 
+  assign show_exit_survey = false
+
+  # Check if the user is logged in and has placed no orders
+  if customer
+    if customer.orders_count == 0
+      assign show_exit_survey = true
+    endif
+  else
+    # If no customer is logged in, show the survey
+    assign show_exit_survey = true
+  endif
+%}
+{% unless cart.empty? and show_exit_survey %}
+  {{ 'component-exit-popup.css' |  asset_url |  stylesheet_tag }}
+<exit-popup>
+    <div id="popup">
+          <div class="popup-content">
+            <button id="close-button" class="close-btn">X</button>
+            {%  comment  %} Example form embed code {% endcomment %} 
+            <div data-tf-live="01J7P476Y43WGJ8GS996630XF4"></div>
+            <script src="//embed.typeform.com/next/embed.js" async></script>
+          </div>
+    </div>
+  </exit-popup>
+  <script src="{{ 'exit-popup.js' |  asset_url }}" defer></script>
+{% endunless %}
